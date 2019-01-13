@@ -65,8 +65,8 @@ CREATE FUNCTION day_price_on_date
 	AS
 	BEGIN
 		DECLARE @discount real = ( SELECT TOP 1 Discount FROM PriceCaps
-															WHERE DayOfConferenceID = @DayOfConferenceID AND @Date <= EndDate
-														ORDER BY EndDate)
+					    WHERE DayOfConferenceID = @DayOfConferenceID AND @Date <= EndDate
+					    ORDER BY EndDate)
 		DECLARE @price money = ( SELECT Price FROM DaysOfConference WHERE DayOfConferenceID = @DayOfConferenceID)
 		RETURN @price * (1 - @discount)
 	end
@@ -79,6 +79,6 @@ CREATE FUNCTION how_many_cancelled
   AS
 	BEGIN
 		DECLARE @isCancelled int = (SELECT count(*) FROM Members
-																WHERE isCancelled = 1 AND DayOFConferenceID = @DayOfConferenceID)
+					     WHERE isCancelled = 1 AND DayOFConferenceID = @DayOfConferenceID)
 		RETURN @isCancelled
 	end
