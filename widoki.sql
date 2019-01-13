@@ -14,7 +14,7 @@ CREATE VIEW most_popular_conferences
 	AS SELECT TOP 5 c.ConferenceDetailsID, c.ConferenceName FROM ConferenceDetails c JOIN DaysOfConference dc
 							ON c.ConferenceDetailsID = dc.ConferenceDetailsID JOIN Reservations r
 							ON dc.DayOfConferenceId = r.DayOfConferenceID
-	   GROUP BY ConferenceDetailsID
+	   GROUP BY ConferenceDetailsID, DayOfConferenceID
 		 ORDER BY count(r.ReservationID) DESC
 
 
