@@ -481,4 +481,28 @@ CREATE PROCEDURE ToPayForReservation
 		RETURN @MembersSum+@DayFee*(1-@DateDiscount)*((1-@StudentDiscount)*@StudentQuantity+(@MembersQuantity-@StudentQuantity))+@WorkshopFee*@MembersQuantity
 	END
 
+CREATE PROCEDURE list_of_attendee_workshop
+	@WorkshopID int
+	AS
+        BEGIN
+ 	      SELECT c.CustomerName FROM WorkshopsMembers w JOIN Members m 
+			   ON w.MemberID = m.MemberID JOIN Customers c 
+	                   ON m.CustomerID = c.CustomerID WHERE w.WorkshopID = @WorkshopID AND m.isCancelled = 0
+						                        
+		              
+  end
 
+
+CREATE PROCEDURE list_of_attendee_day_of_conference
+	@DayOfConferenceID int
+	AS
+        BEGIN
+	      SELECT c.CustomerName FROM  Members m JOIN Customers c 
+			ON m.CustomerID = c.CustomerID WHERE m.DayOfConferenceID = @DayOfConferenceID AND m.isCancelled = 0   
+						                
+						                        
+		              
+  end
+												     
+												     
+												     
