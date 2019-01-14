@@ -36,3 +36,14 @@ CREATE TRIGGER worshopBadDay
         raiserror ('Zła data warsztatów', -1, 1)
         rollback transaction
       end
+
+
+ CREATE TRIGGER Cancell_reservation --nie wiem czy tak ma to być
+  ON Members
+	AFTER INSERT ,UPDATE
+	AS
+	IF (SELECT * FROM inserted i JOIN DaysOfConference dc ON i.DayOfConferenceID = dc.DayOfConferenceID
+		    WHERE (DATEDIFF(day, dc.Date, GETDATE())<7 ) AND Is_paid = 0)
+	BEGIN
+		CancelMember inserted
+	end
