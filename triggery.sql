@@ -38,7 +38,7 @@ CREATE TRIGGER worshopBadDay
       end
 
 
- CREATE TRIGGER Cancell_reservation --nie wiem czy tak ma to być
+ CREATE TRIGGER Cancel_reservation --nie wiem czy tak ma to być
   ON Members
 	AFTER INSERT ,UPDATE
 	AS
