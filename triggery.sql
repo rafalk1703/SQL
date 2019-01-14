@@ -18,7 +18,7 @@ CREATE TRIGGER workshopReservationMaxCount
   IF exists(select *
             from inserted i
             where dbo.workshop_occupied_seats (i.WorkshopID) >
-            (select w.QuantityOfSeats from Workshops w where w.Workshops.WorkshopID = i.WorkshopID))
+            (select w.QuantityOfSeats from Workshops w where w.WorkshopID = i.WorkshopID))
       BEGIN
         raiserror('Za mało wolnych miejsc', -1, 1)
         rollback transaction
@@ -28,10 +28,10 @@ CREATE TRIGGER worshopBadDay
   ON Workshops
   AFTER INSERT
   AS
-  IF exist(select *
+  IF exists(select *
            from inserted i join DaysOfConference dc
            on i.DayOfconferenceID = dc.DayOfConferenceID
-           where dc.Date < i.StartDate or dc.Date < i.EndDate)
+           where dc.Date < i.StartTime or dc.Date < i.EndTime)
       BEGIN
         raiserror ('Zła data warsztatów', -1, 1)
         rollback transaction
