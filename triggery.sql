@@ -31,7 +31,7 @@ CREATE TRIGGER worshopBadDay
   IF exists(select *
            from inserted i join DaysOfConference dc
            on i.DayOfconferenceID = dc.DayOfConferenceID
-           where dc.Date < i.StartTime or dc.Date < i.EndTime)
+           where (dc.Date < i.StartTime or dc.Date < i.EndTime) and i.DayOfConferenceID = dc.DayOfConferenceID)
       BEGIN
         raiserror ('Zła data warsztatów', -1, 1)
         rollback transaction
