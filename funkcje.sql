@@ -1,4 +1,4 @@
-CREATE FUNCTION conference_day_free_seats
+CREATE FUNCTION conference_day_free_seats --sprawdza ile wolnych miejsc na danej konferencji
 	(
 	@DayOfConferenceID int
 	)
@@ -14,7 +14,7 @@ CREATE FUNCTION conference_day_free_seats
     RETURN @freeSeats
   end
 
-CREATE FUNCTION workshop_free_seats
+CREATE FUNCTION workshop_free_seats --sprawdza ile wolnych miejsc na danych warsztatach
 	(
 	@WorkshopID int
 	)
@@ -31,7 +31,7 @@ CREATE FUNCTION workshop_free_seats
     RETURN @freeSeats
 	end
 
-CREATE FUNCTION conference_day_occupied_seats
+CREATE FUNCTION conference_day_occupied_seats --sprawdza ile zajetych miejsc na danej konferencji
 	(
 	@DayOfConferenceID int
 	)
@@ -44,7 +44,7 @@ CREATE FUNCTION conference_day_occupied_seats
   end
 
 
-CREATE FUNCTION workshop_occupied_seats
+CREATE FUNCTION workshop_occupied_seats --sprawdza ile miejsc zajętych na danych warsztatach
 	(
 	@WorkshopID int
 	)
@@ -56,7 +56,7 @@ CREATE FUNCTION workshop_occupied_seats
     RETURN @occupiedSeats - @isCancelled
 	end
 
-CREATE FUNCTION day_price_on_date
+CREATE FUNCTION day_price_on_date --sprawdza ile trzeba zapłacić za daną konferencje w danym czasie
 	(
 	@DayOfConferenceID int,
 	@Date date
@@ -71,7 +71,7 @@ CREATE FUNCTION day_price_on_date
 		RETURN @price * (1 - @discount)
 	end
 
-CREATE FUNCTION how_many_cancelled
+CREATE FUNCTION how_many_cancelled --Sprawdza ile uczetników usuniętych z nia konferencji
 	(
 	@DayOfConferenceID int
 	)
@@ -82,3 +82,22 @@ CREATE FUNCTION how_many_cancelled
 					     WHERE isCancelled = 1 AND DayOFConferenceID = @DayOfConferenceID)
 		RETURN @isCancelled
 	end
+	
+	
+	
+CREATE FUNCTION Is_paid --sprawdza czy opłacona rezerwacja
+  (
+    @ReservationID int
+  )
+  RETURNS BIT
+  AS
+  BEGIN 
+    DECLARE @payments_to_pay money
+
+    SELECT @payments_to_pay = SUM(p.Amount) FROM Payments p WHERE p.ReservationID = @ReservationID
+
+    IF (dbo.ToPayForReservation (@ReservationID) <= @payments_to_pay)
+      RETURN 1
+
+    RETURN 0
+  END 
