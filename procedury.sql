@@ -7,6 +7,7 @@ CREATE PROCEDURE AddConference
 	AS
 	BEGIN
 	SET nocount ON
+	DECLARE @idConf INT
 	
 	INSERT INTO ConferenceDetails(
 		ConferenceName,
@@ -21,6 +22,8 @@ CREATE PROCEDURE AddConference
 		@Fax,
 		@StudentDiscount
 	)
+	SET @idConf = @@IDENTITY
+	RETURN @idConf
 	END
 
 CREATE PROCEDURE AddConferenceDay
@@ -31,6 +34,7 @@ CREATE PROCEDURE AddConferenceDay
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idConfDay INT
 		DECLARE @ConferenceDetailsID int = (SELECT ConferenceDetailsID FROM ConferenceDetails WHERE ConferenceName=@ConferenceName)
 		INSERT INTO DaysOfConference (
 			ConferenceDetailsID,
@@ -43,6 +47,8 @@ CREATE PROCEDURE AddConferenceDay
 			@Date,
 			@Price
 		)
+		SET @idConfDay = @@IDENTITY
+		RETURN @idConfDay
 	END
 
 
@@ -56,6 +62,8 @@ CREATE PROCEDURE AddCustomer
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idCustomer INT
+		
 		INSERT INTO Customers (
 		CustomerName,
 		isCompany,
@@ -71,6 +79,8 @@ CREATE PROCEDURE AddCustomer
 			@Address,
 			@Registrationdate
 		)
+		SET @idCustomer = @@IDENTITY
+		RETURN @idCustomer
 	END
 
 
@@ -85,6 +95,8 @@ CREATE PROCEDURE AddWorkshop
 	AS
 	BEGIN
 		SET nocount on
+		DECLARE @idWorhshop INT
+		
 		INSERT INTO Workshops
 		(
 			DayOfConferenceID,
@@ -103,6 +115,8 @@ CREATE PROCEDURE AddWorkshop
 			@QuantityOfSeats,
 			@Details
 		)
+		SET @idWorkshop = @@IDENTITY
+		RETURN @idWorkshop
 	END
 
 CREATE PROCEDURE AddMember
@@ -112,6 +126,8 @@ CREATE PROCEDURE AddMember
 	AS
 	BEGIN
 		SET nocount on
+		DECLARE @idMember INT
+		
 		INSERT INTO Members (
 			CustomerID,
 			DayOfConferenceID,
@@ -125,6 +141,8 @@ CREATE PROCEDURE AddMember
 			@ReservationFromID,
 			0
 		)
+		SET @idMember = @@IDENTITY
+		RETURN @idMember
 	END
 
 CREATE PROCEDURE AddPayment
@@ -136,6 +154,8 @@ CREATE PROCEDURE AddPayment
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idPay INT
+		
 		INSERT INTO Payments
 		(
 			MemberID,
@@ -152,6 +172,8 @@ CREATE PROCEDURE AddPayment
 			@PaymentDetails,
 			CURRENT_TIMESTAMP
 		)
+		SET @idPay = @@IDENTITY
+		RETURN @idPay
 	END
 
 CREATE PROCEDURE AddReservation
@@ -163,6 +185,8 @@ CREATE PROCEDURE AddReservation
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idReserv INT
+		
 		INSERT INTO Reservations (
 			CustomerID,
 			DayOfConferenceID,
@@ -178,6 +202,8 @@ CREATE PROCEDURE AddReservation
 			@QuantityOfSeats,
 			@QuantityOfStudents
 		)
+		SET @idReserv = @@IDENTITY
+		RETURN @idReserv
 	END
 
 
@@ -189,6 +215,8 @@ CREATE PROCEDURE AddWorkshopMember
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idWMember INT
+		
 		INSERT INTO WorkshopsMembers(
 			MemberID,
 			WorkshopID
@@ -196,6 +224,8 @@ CREATE PROCEDURE AddWorkshopMember
 			@MemberID,
 			@WorkshopID
 		)
+		SET @idWMember = @@IDENTITY
+		RETURN @idWMember
 	END
 
 
@@ -207,6 +237,8 @@ CREATE PROCEDURE AddPriceCap
 	AS
 	BEGIN
 		SET nocount ON
+		DECLARE @idPriceC INT
+		
 		INSERT INTO PriceCaps(
 			DayOfConferenceID,
 			Discount,
@@ -218,6 +250,8 @@ CREATE PROCEDURE AddPriceCap
 			@StartDate,
 			@EndDate
 		)
+		SET @idPriceC = @@IDENTITY
+		RETURN @idPriceC
 	END
 
 
